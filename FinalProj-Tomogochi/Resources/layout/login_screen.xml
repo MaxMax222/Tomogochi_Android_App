@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="16dp"
+    >
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:hint="@string/email"
+         android:layout_margin="8dp"
+        android:id="@+id/email_edittxt"
+        android:inputType="textEmailAddress"/>
+    
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:hint="@string/pass"
+         android:layout_margin="8dp"
+        android:id="@+id/password_edittxt"
+        android:inputType="textPassword"/>
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remember"
+            android:id="@+id/remember_checkbox"
+            android:textSize="15sp"
+        />
+
+     <!-- Login Button -->
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="165dp"
+        android:layout_height="55dp"
+        android:text="@string/login"
+        android:layout_margin="8dp"
+        app:cornerRadius="16dp"
+        android:textAllCaps="false"/>
+
+    <!-- Register Button -->
+    <Button
+        android:id="@+id/register_btn"
+        android:layout_width="165dp"
+        android:layout_height="55dp"
+        android:text="@string/register"
+        android:layout_margin="8dp"
+        app:cornerRadius="16dp"
+        android:textAllCaps="false"/>
+</LinearLayout>
+

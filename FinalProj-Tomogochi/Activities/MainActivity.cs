@@ -6,9 +6,9 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.BottomNavigation;
 
-namespace FinalProj_Tomogochi
+namespace FinalProj_Tomogochi.Activities
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme")]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         TextView textMessage;
@@ -19,7 +19,6 @@ namespace FinalProj_Tomogochi
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            textMessage = FindViewById<TextView>(Resource.Id.message);
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
         }
@@ -34,13 +33,13 @@ namespace FinalProj_Tomogochi
             switch (item.ItemId)
             {
                 case Resource.Id.navigation_home:
-                    textMessage.SetText(Resource.String.title_home);
+                    Toast.MakeText(Application.Context, Resource.String.title_home, ToastLength.Long).Show();
                     return true;
                 case Resource.Id.navigation_dashboard:
-                    textMessage.SetText(Resource.String.title_dashboard);
+                    Toast.MakeText(Application.Context, Resource.String.title_dashboard, ToastLength.Long).Show();
                     return true;
                 case Resource.Id.navigation_notifications:
-                    textMessage.SetText(Resource.String.title_notifications);
+                    Toast.MakeText(Application.Context, Resource.String.title_notifications, ToastLength.Long).Show();
                     return true;
             }
             return false;

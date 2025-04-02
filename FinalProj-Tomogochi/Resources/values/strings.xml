@@ -3,5 +3,16 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="action_settings">Settings</string>
+    <string name="pass">Password</string>
+    <string name="conf_pass">Confirm Password</string>
+    <string name="email">Email</string>
+    <string name="remember">Remember me</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="Fname">Full Name</string>
+    <string name="username">Username</string>
+    <string name="cencel">Cencel</string>
+    <string name="slecet_save">Select a Save Slot</string>
 </resources>
 
