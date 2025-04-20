@@ -14,12 +14,14 @@ using Microcharts;
 using Microcharts.Droid;
 using SkiaSharp;
 using AndroidX.Fragment.App;
+using AndroidX.Core.Content;
+using Android.App;
 
 namespace FinalProj_Tomogochi.Fragments
 {
     [Obsolete]
-    public class CharacterFragment : Fragment
-	{
+    public class CharacterFragment : AndroidX.Fragment.App.Fragment
+    {
         
         [Obsolete]
         public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -36,7 +38,7 @@ namespace FinalProj_Tomogochi.Fragments
             int sugar = 120;
             for (int i = 0; i < 15; i++)
             {
-                string color = GetColorString(sugar);
+                string color = GetColorString(sugar, Application.Context);
                 entries.Add(new ChartEntry(sugar)
                 {
                     Label = DateTime.Now.Add(TimeSpan.FromMinutes(i)).ToString("HH:mm"),
@@ -63,13 +65,20 @@ namespace FinalProj_Tomogochi.Fragments
             return view;
         }
 
-        private string GetColorString(int sugar)
+        private string GetColorString(int sugar, Context context)
         {
+            int colorResId;
+
             if (sugar > 70 && sugar < 180)
-                return "ADFF2F"; // Green
-            if (sugar >= 180)
-                return "FFEF00"; // Yellow
-            return "ED1B24"; // Red
+                colorResId = Resource.Color.sea_green;
+            else if (sugar >= 180)
+                colorResId = Resource.Color.xanthous;
+            else
+                colorResId = Resource.Color.bittersweet_shimmer;
+
+            int colorInt = ContextCompat.GetColor(context, colorResId);
+            string hex = $"#{colorInt & 0xFFFFFF:X6}"; // Format as hex string like "#3CB371"
+            return hex;
         }
     }
 }
