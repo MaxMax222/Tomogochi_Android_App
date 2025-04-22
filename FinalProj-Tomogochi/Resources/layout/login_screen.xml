@@ -39,7 +39,9 @@
         android:text="@string/login"
         android:layout_margin="8dp"
         app:cornerRadius="16dp"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:backgroundTint="@color/dark_purple"
+        android:textColor="@android:color/white"/>
 
     <!-- Register Button -->
     <Button
@@ -49,6 +51,10 @@
         android:text="@string/register"
         android:layout_margin="8dp"
         app:cornerRadius="16dp"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:backgroundTint="@color/dark_purple"
+        android:textColor="@android:color/white"/>
+
+
 </LinearLayout>
 

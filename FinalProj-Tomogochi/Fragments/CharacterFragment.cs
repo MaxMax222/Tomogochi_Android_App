@@ -1,19 +1,13 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
-using Android.Widget;
 using Microcharts;
 using Microcharts.Droid;
 using SkiaSharp;
-using AndroidX.Fragment.App;
 using AndroidX.Core.Content;
 using Android.App;
 
@@ -36,7 +30,7 @@ namespace FinalProj_Tomogochi.Fragments
             var entries = new List<ChartEntry>();
             var rnd = new Random();
             int sugar = 120;
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 10; i++)
             {
                 string color = GetColorString(sugar, Application.Context);
                 entries.Add(new ChartEntry(sugar)
@@ -51,13 +45,14 @@ namespace FinalProj_Tomogochi.Fragments
             var chart = new LineChart
             {
                 Entries = entries,
-                BackgroundColor = SKColor.Parse("#FFFFFF"),
+                BackgroundColor = SKColor.Parse("#f7ecdc"),
                 LineMode = LineMode.Spline,
                 LineSize = 5,
                 LabelTextSize = 30,
                 PointMode = PointMode.Circle,
                 PointSize = 10,
                 ValueLabelOrientation = Microcharts.Orientation.Horizontal,
+                LabelOrientation = Microcharts.Orientation.Horizontal
             };
 
             chartView.Chart = chart;
@@ -70,11 +65,11 @@ namespace FinalProj_Tomogochi.Fragments
             int colorResId;
 
             if (sugar > 70 && sugar < 180)
-                colorResId = Resource.Color.sea_green;
+                colorResId = Resource.Color.hunter_green;
             else if (sugar >= 180)
-                colorResId = Resource.Color.xanthous;
+                colorResId = Resource.Color.tea_green;
             else
-                colorResId = Resource.Color.bittersweet_shimmer;
+                colorResId = Resource.Color.bright_pink_crayola;
 
             int colorInt = ContextCompat.GetColor(context, colorResId);
             string hex = $"#{colorInt & 0xFFFFFF:X6}"; // Format as hex string like "#3CB371"

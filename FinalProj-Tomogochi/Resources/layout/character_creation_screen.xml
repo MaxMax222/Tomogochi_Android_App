@@ -8,8 +8,8 @@
 
     <!-- ImageView to display the avatar -->
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:id="@+id/avatar_imgView"
         android:layout_marginBottom="16dp" />
 
@@ -24,11 +24,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Character"
-            android:textSize="13dp"/>
+            android:textSize="18dp"/>
         <Spinner
             android:id="@+id/spinner_Characters"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
         </LinearLayout>
     
     <!-- Horizontal LinearLayout for Spinners with Labels -->
@@ -37,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        >
 
         <!-- Hair Color Label and Spinner -->
         <TextView
@@ -45,26 +46,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hair Color"
-            android:textSize="13dp"/>
+            android:textSize="18dp"/>
         <Spinner
             android:id="@+id/spinner_hairColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
+         />
+        </LinearLayout>
+        <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
         <!-- Body Color Label and Spinner -->
         <TextView
             android:id="@+id/label_skinColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Body Color"
-            android:textSize="13dp"
+            android:textSize="18dp"
             />
         <Spinner
             android:id="@+id/spinner_skinColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             />
 
     </LinearLayout>

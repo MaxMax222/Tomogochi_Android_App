@@ -11,7 +11,7 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="android:textColorPrimary">@color/marian_blue</item>
-        <item name="android:textColorSecondary">@color/bittersweet_shimmer</item>
+        <item name="android:textColorSecondary">@color/hunter_green</item>
     </style>
 
 </resources>
