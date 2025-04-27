@@ -79,7 +79,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Assets\AboutAssets.txt" />
-    <None Include="google-services.json" />
   </ItemGroup>
   <ItemGroup>
       <AndroidResource Include="Resources\layout\activity_main.xml">
@@ -169,6 +168,9 @@
     <Folder Include="Activities\" />
     <Folder Include="Fragments\" />
     <Folder Include="Classes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="google-services.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
