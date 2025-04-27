@@ -15,7 +15,6 @@ namespace FinalProj_Tomogochi.Activities
 		Button log_btn, reg_btn;
         EditText email_edtxt, password_edtxt;
         CheckBox remember;
-        private User user;
 
         private ISharedPreferences _preferences;
         private ISharedPreferencesEditor _editor;
@@ -23,6 +22,7 @@ namespace FinalProj_Tomogochi.Activities
 		{
 			base.OnCreate (savedInstanceState);
 			SetContentView(Resource.Layout.login_screen);
+            User.GetUserInstance();
 			Init();
 
 		}
@@ -32,7 +32,6 @@ namespace FinalProj_Tomogochi.Activities
             email_edtxt = FindViewById<EditText>(Resource.Id.email_edittxt);
             password_edtxt = FindViewById<EditText>(Resource.Id.password_edittxt);
             remember = FindViewById<CheckBox>(Resource.Id.remember_checkbox);
-            user = User.GetUserInstance();
             _preferences = GetSharedPreferences("UserPreferences", FileCreationMode.Private);
             _editor = _preferences.Edit();
             LoadUserPreferences();

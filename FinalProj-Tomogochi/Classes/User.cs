@@ -9,6 +9,7 @@ using Android.App;
 using Java.Util;
 using Firebase.Storage;
 using static Xamarin.Essentials.Permissions;
+using ShopMiniProj.Classes;
 
 namespace FinalProj_Tomogochi.Classes
 {
@@ -28,8 +29,8 @@ namespace FinalProj_Tomogochi.Classes
 
         private User()
 		{
-            database = FireBaseHelper.GetFirestore();
-            FirebaseAuth = FireBaseHelper.GetFirebaseAuthentication();
+            database = FirebaseHelper.GetFirestore();
+            FirebaseAuth = FirebaseHelper.GetFirebaseAuthentication();
             characters = new List<Character>();
         }
 
