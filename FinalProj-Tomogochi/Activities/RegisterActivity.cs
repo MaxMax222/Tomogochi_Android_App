@@ -1,21 +1,14 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using FinalProj_Tomogochi.Classes;
-using Firebase.Auth;
 
 namespace FinalProj_Tomogochi.Activities
 {
-	[Activity (Label = "RegisterActivity", Theme = "@style/AppTheme")]			
+    [Activity (Label = "RegisterActivity", Theme = "@style/AppTheme")]			
 	public class RegisterActivity : Activity
 	{
         private EditText _fullNameEditText, _lastNameEditText, _usernameEditText, _emailEditText, _passwordEditText, _confirmPasswordEditText;

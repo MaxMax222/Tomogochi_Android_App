@@ -1,21 +1,15 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using Firebase.Auth;
 using FinalProj_Tomogochi.Classes;
 
 namespace FinalProj_Tomogochi.Activities
 {
-	[Activity (Label = "LoginActivity", Theme = "@style/AppTheme", MainLauncher = true)]			
+    [Activity (Label = "LoginActivity", Theme = "@style/AppTheme", MainLauncher = true)]			
 	public class LoginActivity : Activity
 	{
 		Button log_btn, reg_btn;
@@ -120,7 +114,7 @@ namespace FinalProj_Tomogochi.Activities
 
         private void NavigateToMain()
         {
-            var intent = new Intent(this, typeof(MainActivity));
+            var intent = new Intent(this, typeof(SaveSlotsActivity));
             intent.SetFlags(ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(intent);
         }

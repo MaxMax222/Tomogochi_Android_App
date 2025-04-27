@@ -10,6 +10,9 @@ using Microcharts.Droid;
 using SkiaSharp;
 using AndroidX.Core.Content;
 using Android.App;
+using Android.Widget;
+using Bumptech.Glide;
+using FinalProj_Tomogochi.Classes;
 
 namespace FinalProj_Tomogochi.Fragments
 {
@@ -25,6 +28,13 @@ namespace FinalProj_Tomogochi.Fragments
 
             View view = inflater.Inflate(Resource.Layout.character_view_screen, container, false);
             var chartView = view.FindViewById<ChartView>(Resource.Id.chartView);
+            var avatar = view.FindViewById<ImageView>(Resource.Id.avatar_img);
+            Glide.With(this)
+                    .Load(User.GetUserInstance().ActiveCharacter.avatar_path)
+                    .Error(Resource.Drawable.anonymus)
+                    .Into(avatar);
+            var char_name_view = view.FindViewById<TextView>(Resource.Id.char_name_txt);
+            char_name_view.Text = User.GetUserInstance().ActiveCharacter.Name;
 
             // Create sample data
             var entries = new List<ChartEntry>();

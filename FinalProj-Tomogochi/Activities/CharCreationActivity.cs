@@ -1,27 +1,28 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Bumptech.Glide;
-using static Android.App.DownloadManager;
+using System.IO;
+using System.Net.Http;
+using FinalProj_Tomogochi.Classes;
 
 namespace FinalProj_Tomogochi.Activities
 {
-	[Activity (Label = "CharCreationActivity", Theme = "@style/AppTheme")]			
+    [Activity (Label = "CharCreationActivity", Theme = "@style/AppTheme")]			
 	public class CharCreationActivity : Activity
 	{
 		private Spinner hair_color_spinner, body_color_spinner, characters_spinner;
 		private ImageView avatar_imageView;
-		string url;
-		protected override void OnCreate (Bundle savedInstanceState)
+        private Button create_btn;
+        private EditText character_name_edttxt;
+        private string fullUrl;
+
+        protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
 
@@ -33,10 +34,9 @@ namespace FinalProj_Tomogochi.Activities
 
         private void Init()
         {
-            url = "https://api.dicebear.com/9.x/Miniavs/png?seed=";
-
+            
             avatar_imageView = FindViewById<ImageView>(Resource.Id.avatar_imgView);
-
+            character_name_edttxt = FindViewById<EditText>(Resource.Id.character_name_edttxt);
             // Hair colors
             hair_color_spinner = FindViewById<Spinner>(Resource.Id.spinner_hairColor);
             List<string> hair_colors = new List<string> { "Russion Violet", "Cafe Noir", "Orange" };
@@ -63,9 +63,57 @@ namespace FinalProj_Tomogochi.Activities
             
             characters_spinner.ItemSelected += OnSpinnerChanged;
 
+            create_btn = FindViewById<Button>(Resource.Id.create_btn);
+            create_btn.Click += Create_btn_Click;
+
             // Load initial avatar
             UpdateAvatar();
         }
+
+        private async void Create_btn_Click(object sender, EventArgs e)
+        {
+            if (character_name_edttxt.Text.Trim() != "")
+            {
+                try
+                {
+                    using (var httpClient = new HttpClient())
+                    {
+                        // Download the image bytes from DiceBear URL
+                        var imageBytes = await httpClient.GetByteArrayAsync(fullUrl);
+
+                        // Set the storage path in Firebase (example path)
+                        string in_storagePath = $"avatars/{Guid.NewGuid()}.png";
+
+                        // Upload the avatar to Firebase Storage
+                        string downloadUrl = await User.GetUserInstance().SaveAvatarToFirebaseStorageAsync(imageBytes, in_storagePath);
+
+                        if (downloadUrl != null)
+                        {
+                            // Create the Character with the URL from Firebase
+                            Character character = new Character(character_name_edttxt.Text, downloadUrl);
+                            User.GetUserInstance().characters.Add(character);
+                            await User.GetUserInstance().SaveCharacterToFirestoreAsync(character);
+
+                            Toast.MakeText(Application.Context, "Character created successfully!", ToastLength.Short).Show();
+                            Finish(); // or move to another Activity if you want
+                        }
+                        else
+                        {
+                            Toast.MakeText(Application.Context, "Failed to upload avatar.", ToastLength.Short).Show();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Toast.MakeText(Application.Context, $"Error: {ex.Message}", ToastLength.Long).Show();
+                }
+            }
+            else
+            {
+                Toast.MakeText(Application.Context, "Please enter a name.", ToastLength.Short).Show();
+            }
+        }
+
 
         private void OnSpinnerChanged(object sender, AdapterView.ItemSelectedEventArgs e)
         {
@@ -79,7 +127,7 @@ namespace FinalProj_Tomogochi.Activities
             string skinColor = ParseBodyColor();
 
             // Optional: glassesProbability set to 0 to hide them
-            string fullUrl = $"https://api.dicebear.com/9.x/miniavs/png?seed={seed}&hairColor={hairColor}&skinColor={skinColor}&glassesProbability=0";
+            fullUrl = $"https://api.dicebear.com/9.x/miniavs/png?seed={seed}&hairColor={hairColor}&skinColor={skinColor}&glassesProbability=0";
 
             Glide.With(this)
                  .Load(fullUrl)
@@ -120,6 +168,9 @@ namespace FinalProj_Tomogochi.Activities
                     return "transparent";
             }
         }
+
+
+        
     }
 }
 

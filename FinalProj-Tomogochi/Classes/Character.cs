@@ -14,15 +14,16 @@ namespace FinalProj_Tomogochi.Classes
     public class Character
 	{
 		public string Name { get; }
-		public string character_avatar { get; }
+		public string avatar_path{ get; }
 		public int CurrentBG { get; private set; }
 		public List<ChartEntry> LastBGs;
         public int BG_Change { get; private set; }
         private Random rnd;
-		public Character(string name, string avatar_url)
+        public DateTime LastActive { get; set; }
+		public Character(string name, string path)
 		{
             Name = name;
-            character_avatar = avatar_url;
+            avatar_path = path;
             CurrentBG = 120;
             LastBGs = new List<ChartEntry> { new ChartEntry(CurrentBG) {
                 Label = DateTime.Now.ToString("HH:mm"),
