@@ -16,7 +16,7 @@ namespace FinalProj_Tomogochi.Classes
 		public string Name { get; }
 		public string avatar_path{ get; }
 		public int CurrentBG { get; private set; }
-		public List<ChartEntry> LastBGs;
+		public List<ChartEntry> LastBGs; 
         public int BG_Change { get; private set; }
         private Random rnd;
         public DateTime LastActive { get; set; }
@@ -80,7 +80,7 @@ namespace FinalProj_Tomogochi.Classes
             BG_Change = 0;
         }
 
-        private string GetColorString(int sugar, Context context)
+        public string GetColorString(int sugar, Context context)
         {
             int colorResId;
 

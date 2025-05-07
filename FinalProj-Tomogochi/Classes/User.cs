@@ -122,13 +122,13 @@ namespace FinalProj_Tomogochi.Classes
             try
             {
                 var userReference = database.Collection(COLLECTION_NAME).Document(FirebaseAuth.CurrentUser.Uid);
-                var charactersCollection = userReference.Collection("characters");
+                var characterDocRef = userReference.Collection("characters").Document(character.Name);
 
                 HashMap characterData = new HashMap();
                 characterData.Put("name", character.Name);
                 characterData.Put("avatar_path", character.avatar_path);
 
-                await charactersCollection.Add(characterData);
+                await characterDocRef.Set(characterData);
 
                 Toast.MakeText(Application.Context, "Character saved to Firestore!", ToastLength.Short).Show();
             }
