@@ -22,7 +22,7 @@ namespace FinalProj_Tomogochi.Classes
 
 		public BGupdateFBlistener()
 		{
-            FirebaseHelper.GetFirestore().Collection($"users/{FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid}/characters/{User.GetUserInstance().ActiveCharacter.Name}/lastBGs").OrderBy("createdAt").AddSnapshotListener(this);
+            FirebaseHelper.GetFirestore().Collection($"users/{FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid}/characters/{User.GetUserInstance().ActiveCharacter.Name}/lastBGs").OrderBy("label").AddSnapshotListener(this);
         }
 
         public void OnEvent(Java.Lang.Object value, FirebaseFirestoreException error)

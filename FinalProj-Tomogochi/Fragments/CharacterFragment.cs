@@ -1,7 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
-
+using System.Timers;
 using Android.Content;
 using Android.OS;
 using Android.Views;
@@ -14,6 +14,13 @@ using Android.Widget;
 using Bumptech.Glide;
 using FinalProj_Tomogochi.Classes;
 using System.Linq;
+using ShopMiniProj.Classes;
+using Firebase.Firestore;
+using Android.Gms.Extensions;
+using Java.Util;
+using Java.Security;
+using Java.Lang;
+using Android.Icu.Lang;
 
 namespace FinalProj_Tomogochi.Fragments
 {
@@ -23,11 +30,16 @@ namespace FinalProj_Tomogochi.Fragments
         private BGupdateFBlistener listener = new BGupdateFBlistener();
         private List<ChartEntry> entries;
         private ChartView chartView;
+        private System.Timers.Timer timer;
+        Classes.Character character;
+        CollectionReference collectionRef;
         [Obsolete]
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+
+            character = User.GetUserInstance().ActiveCharacter;
 
             View view = inflater.Inflate(Resource.Layout.character_view_screen, container, false);
             chartView = view.FindViewById<ChartView>(Resource.Id.chartView);
@@ -39,12 +51,56 @@ namespace FinalProj_Tomogochi.Fragments
             var char_name_view = view.FindViewById<TextView>(Resource.Id.char_name_txt);
             char_name_view.Text = User.GetUserInstance().ActiveCharacter.Name;
 
+
+            character.UpdateChart(chartView);
+
+            collectionRef = FirebaseHelper.GetFirestore()
+                    .Collection("users").Document(FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid)
+                    .Collection("characters").Document(User.GetUserInstance().ActiveCharacter.Name)
+                    .Collection("lastBGs");
+            timer = new System.Timers.Timer(1000 * 20);
+            timer.Elapsed += Timer_Elapsed;
+            timer.AutoReset = true;  // true = repeat
+            timer.Enabled = true;
+
             listener.OnBGEntryRetrieved += Listener_OnBGEntryRetrieved;
-
-            User.GetUserInstance().ActiveCharacter.UpdateChart(chartView);
-
             return view;
         }
+
+       
+
+        private async void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        { 
+            try
+            {
+                var time = DateTime.Now;
+             
+                character.UpdateBG();
+        
+                // Only add the *latest* entry, don't delete and re-add all
+                var bgMap = new HashMap();
+                bgMap.Put("label", time.ToString("HH:mm"));
+                bgMap.Put("value", character.CurrentBG);
+                await collectionRef.Add(bgMap);
+
+                // Optional: trim older entries if count exceeds 10
+                QuerySnapshot snapshot = (QuerySnapshot)await collectionRef.OrderBy("label").Get();
+                if (snapshot.Documents.Count > 10)
+                {
+                    int excess = snapshot.Documents.Count - 10;
+                    for (int i = 0; i < excess; i++)
+                    {
+                        await snapshot.Documents[i].Reference.Delete();
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Toast.MakeText(Application.Context, $"Timer update failed: {ex.Message}", ToastLength.Long).Show();
+            }
+          
+        }
+
 
         private void Listener_OnBGEntryRetrieved(object sender, BGupdateFBlistener.BGEntriesEventArgs e)
         {
@@ -57,8 +113,7 @@ namespace FinalProj_Tomogochi.Fragments
             {
                 character.UpdateBG_List(entry); // Add entries with existing logic
             }
-            character.UpdateChart(chartView); // Re-draw the chart
-
+            character.UpdateChart(chartView);
         }
     }
 }

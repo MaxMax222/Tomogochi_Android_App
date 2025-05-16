@@ -73,6 +73,7 @@
     <Compile Include="Activities\SaveSlotsActivity.cs" />
     <Compile Include="Classes\FirebaseHelper.cs" />
     <Compile Include="Classes\BGupdateFBlistener.cs" />
+    <Compile Include="Fragments\ShopFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

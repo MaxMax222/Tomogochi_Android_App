@@ -4061,13 +4061,13 @@ namespace FinalProj_Tomogochi
 			public const int navigation_character = 2131230890;
 			
 			// aapt resource value: 0x7F0800AB
-			public const int navigation_dashboard = 2131230891;
+			public const int navigation_header_container = 2131230891;
 			
 			// aapt resource value: 0x7F0800AC
-			public const int navigation_header_container = 2131230892;
+			public const int navigation_notifications = 2131230892;
 			
 			// aapt resource value: 0x7F0800AD
-			public const int navigation_notifications = 2131230893;
+			public const int navigation_shop = 2131230893;
 			
 			// aapt resource value: 0x7F0800AE
 			public const int never = 2131230894;
@@ -5045,13 +5045,13 @@ namespace FinalProj_Tomogochi
 			public const int status_bar_notification_info_overflow = 2131624010;
 			
 			// aapt resource value: 0x7F0E004B
-			public const int title_dashboard = 2131624011;
+			public const int title_home = 2131624011;
 			
 			// aapt resource value: 0x7F0E004C
-			public const int title_home = 2131624012;
+			public const int title_notifications = 2131624012;
 			
 			// aapt resource value: 0x7F0E004D
-			public const int title_notifications = 2131624013;
+			public const int title_shop = 2131624013;
 			
 			// aapt resource value: 0x7F0E004E
 			public const int username = 2131624014;

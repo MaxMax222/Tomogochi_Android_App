@@ -26,7 +26,6 @@ namespace FinalProj_Tomogochi.Activities
 
             navigation.SelectedItemId = Resource.Id.navigation_character;
 
-            LoadFragment(new CharacterFragment());
         }
 
         [Obsolete]
@@ -55,8 +54,8 @@ namespace FinalProj_Tomogochi.Activities
                 case Resource.Id.navigation_character:
                     selectedFragment = new CharacterFragment();
                     break;
-                case Resource.Id.navigation_dashboard:
-                    Toast.MakeText(Application.Context, Resource.String.title_dashboard, ToastLength.Long).Show();
+                case Resource.Id.navigation_shop:
+                    Toast.MakeText(Application.Context, Resource.String.title_shop, ToastLength.Long).Show();
                     return true;
                 case Resource.Id.navigation_notifications:
                     Toast.MakeText(Application.Context, Resource.String.title_notifications, ToastLength.Long).Show();
