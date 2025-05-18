@@ -36,7 +36,7 @@ namespace FinalProj_Tomogochi.Classes
                 BGs.Add(new ChartEntry(int.Parse(BGvalue)) {
                     Label = label,
                     ValueLabel = BGvalue,
-                    Color = SKColor.Parse(User.GetUserInstance().ActiveCharacter.GetColorString(int.Parse(BGvalue), Application.Context))
+                    Color = SKColor.Parse(User.GetColorString(int.Parse(BGvalue), Application.Context))
                 });
             }
 

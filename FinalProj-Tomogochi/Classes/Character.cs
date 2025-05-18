@@ -18,8 +18,9 @@ namespace FinalProj_Tomogochi.Classes
 		public int CurrentBG { get; private set; }
 		public List<ChartEntry> LastBGs; 
         public int BG_Change { get; private set; }
-        private Random rnd;
+        private Random rnd = new Random();
         public DateTime LastActive { get; set; }
+        public double Balance { get; set; }
 		public Character(string name, string path)
 		{
             Name = name;
@@ -28,11 +29,20 @@ namespace FinalProj_Tomogochi.Classes
             LastBGs = new List<ChartEntry> { new ChartEntry(CurrentBG) {
                 Label = DateTime.Now.ToString("HH:mm"),
                 ValueLabel = CurrentBG.ToString(),
-                Color = SKColor.Parse(GetColorString(CurrentBG, Application.Context))
+                Color = SKColor.Parse(User.GetColorString(CurrentBG, Application.Context))
             } };
             BG_Change = 0;
-            rnd = new Random();
+         
 		}
+
+        public Character(string name, string path, double balance, int bgChange, List<ChartEntry> BGs)
+        {
+            Name = name;
+            avatar_path = path;
+            Balance = balance;
+            LastBGs = BGs;
+            BG_Change = bgChange;
+        }
 
 		public void UpdateChart(ChartView chartView)
 		{
@@ -61,7 +71,7 @@ namespace FinalProj_Tomogochi.Classes
             LastBGs.Add(BG);
         }
 
-        public void CalculateAffectBG(Food food)
+        public void EatFood(Food food)
         {
             bool raises = rnd.NextDouble() < food.BG_IncreaseChance;
             bool lowers = rnd.NextDouble() < food.BG_DecreaseChance;
@@ -77,24 +87,47 @@ namespace FinalProj_Tomogochi.Classes
         public void UpdateBG()
         {
             CurrentBG += BG_Change;
+
+            if(CurrentBG < 20 )
+            {
+                Balance += 1;
+            }
+            else if(CurrentBG >= 20 && CurrentBG <= 60)
+            {
+                Balance += 5;
+            }
+            else if(CurrentBG > 60 && CurrentBG <= 80)
+            {
+                Balance += 7;
+            }
+            else if(CurrentBG > 80 && CurrentBG <= 100)
+            {
+                Balance += 20;
+            }
+            else if (CurrentBG > 100 && CurrentBG <= 140)
+            {
+                Balance += 10;
+            }
+            else if (CurrentBG > 140 && CurrentBG <= 180)
+            {
+                Balance += 7;
+            }
+            else if (CurrentBG > 180 && CurrentBG <= 250)
+            {
+                Balance += 5;
+            }
+            else if (CurrentBG > 250 && CurrentBG <= 350)
+            {
+                Balance += 2;
+            }
+            else
+            {
+                Balance += 1;
+            }
             BG_Change = 0;
         }
 
-        public string GetColorString(int sugar, Context context)
-        {
-            int colorResId;
-
-            if (sugar > 70 && sugar < 180)
-                colorResId = Resource.Color.hunter_green;
-            else if (sugar >= 180)
-                colorResId = Resource.Color.tea_green;
-            else
-                colorResId = Resource.Color.bright_pink_crayola;
-
-            int colorInt = ContextCompat.GetColor(context, colorResId);
-            string hex = $"#{colorInt & 0xFFFFFF:X6}"; // Format as hex string like "#3CB371"
-            return hex;
-        }
+        
     }
 }
 

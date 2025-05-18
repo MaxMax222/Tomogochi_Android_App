@@ -30,9 +30,11 @@ namespace FinalProj_Tomogochi.Fragments
         private BGupdateFBlistener listener = new BGupdateFBlistener();
         private List<ChartEntry> entries;
         private ChartView chartView;
+        private TextView balance;
         private System.Timers.Timer timer;
         Classes.Character character;
-        CollectionReference collectionRef;
+        CollectionReference BGcollectionRef;
+        DocumentReference characterRef;
         [Obsolete]
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -50,14 +52,16 @@ namespace FinalProj_Tomogochi.Fragments
                     .Into(avatar);
             var char_name_view = view.FindViewById<TextView>(Resource.Id.char_name_txt);
             char_name_view.Text = User.GetUserInstance().ActiveCharacter.Name;
-
+            balance = view.FindViewById<TextView>(Resource.Id.balance_txt);
+            balance.Text = $"Current Balance: {character.Balance}$";
 
             character.UpdateChart(chartView);
 
-            collectionRef = FirebaseHelper.GetFirestore()
+            characterRef = FirebaseHelper.GetFirestore()
                     .Collection("users").Document(FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid)
-                    .Collection("characters").Document(User.GetUserInstance().ActiveCharacter.Name)
-                    .Collection("lastBGs");
+                    .Collection("characters").Document(User.GetUserInstance().ActiveCharacter.Name);
+
+            BGcollectionRef = characterRef.Collection("lastBGs");
             timer = new System.Timers.Timer(1000 * 20);
             timer.Elapsed += Timer_Elapsed;
             timer.AutoReset = true;  // true = repeat
@@ -67,24 +71,29 @@ namespace FinalProj_Tomogochi.Fragments
             return view;
         }
 
-       
+
 
         private async void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        { 
+        {
             try
             {
                 var time = DateTime.Now;
-             
+
                 character.UpdateBG();
-        
+
+                var updates = new Dictionary<string, Java.Lang.Object> {
+                { "balance", new Java.Lang.String(character.Balance.ToString()) },
+                { "bgChange", new Java.Lang.String(character.BG_Change.ToString()) }
+                };
+                await characterRef.Update(updates);
                 // Only add the *latest* entry, don't delete and re-add all
                 var bgMap = new HashMap();
                 bgMap.Put("label", time.ToString("HH:mm"));
                 bgMap.Put("value", character.CurrentBG);
-                await collectionRef.Add(bgMap);
+                await BGcollectionRef.Add(bgMap);
 
                 // Optional: trim older entries if count exceeds 10
-                QuerySnapshot snapshot = (QuerySnapshot)await collectionRef.OrderBy("label").Get();
+                QuerySnapshot snapshot = (QuerySnapshot)await BGcollectionRef.OrderBy("label").Get();
                 if (snapshot.Documents.Count > 10)
                 {
                     int excess = snapshot.Documents.Count - 10;
@@ -114,6 +123,8 @@ namespace FinalProj_Tomogochi.Fragments
                 character.UpdateBG_List(entry); // Add entries with existing logic
             }
             character.UpdateChart(chartView);
+            balance.Text = $"Current Balance: {character.Balance}$";
+
         }
     }
 }

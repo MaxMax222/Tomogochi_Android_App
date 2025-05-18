@@ -10,6 +10,10 @@ using Java.Util;
 using Firebase.Storage;
 using static Xamarin.Essentials.Permissions;
 using ShopMiniProj.Classes;
+using Microcharts;
+using SkiaSharp;
+using Android.Content;
+using AndroidX.Core.Content;
 
 namespace FinalProj_Tomogochi.Classes
 {
@@ -127,7 +131,8 @@ namespace FinalProj_Tomogochi.Classes
                 HashMap characterData = new HashMap();
                 characterData.Put("name", character.Name);
                 characterData.Put("avatar_path", character.avatar_path);
-
+                characterData.Put("balance",0.ToString());
+                characterData.Put("bgChange",0.ToString());
                 await characterDocRef.Set(characterData);
 
                 Toast.MakeText(Application.Context, "Character saved to Firestore!", ToastLength.Short).Show();
@@ -145,12 +150,30 @@ namespace FinalProj_Tomogochi.Classes
                 characters.Clear(); // clear existing list to avoid duplicates
                 var userReference = database.Collection(COLLECTION_NAME).Document(FirebaseAuth.CurrentUser.Uid);
                 var charactersCollectionSnapshot = (QuerySnapshot)await userReference.Collection("characters").Get();
-
                 foreach (var document in charactersCollectionSnapshot.Documents)    
                 {
                     string name = document.GetString("name");
+
+                    var bgsRef = userReference.Collection("characters").Document(name).Collection("lastBGs");
+                    var bgSnapshot = (QuerySnapshot)await bgsRef.Get();
+                    var BGs = new List<ChartEntry>();
+                    foreach (DocumentSnapshot BG in bgSnapshot.Documents)
+                    {
+                        string label = BG.Get("label").ToString();
+                        string BGvalue = BG.Get("value").ToString();
+                        BGs.Add(new ChartEntry(int.Parse(BGvalue))
+                        {
+                            Label = label,
+                            ValueLabel = BGvalue,
+                            Color = SKColor.Parse(GetColorString(int.Parse(BGvalue), Application.Context))
+                        });
+                    }
+
                     string avatarPath = document.GetString("avatar_path");
-                    Character character = new Character(name, avatarPath);
+                    double balance = double.Parse(document.GetString("balance"));
+                    int bgChange = int.Parse(document.GetString("bgChange"));
+
+                    Character character = new Character(name, avatarPath,balance,bgChange,BGs);
                     characters.Add(character);
                 }
             }
@@ -158,6 +181,22 @@ namespace FinalProj_Tomogochi.Classes
             {
                 Toast.MakeText(Application.Context, $"Failed to load characters: {ex.Message}", ToastLength.Long).Show();
             }
+        }
+
+        public static string GetColorString(int sugar, Context context)
+        {
+            int colorResId;
+
+            if (sugar > 70 && sugar < 180)
+                colorResId = Resource.Color.hunter_green;
+            else if (sugar >= 180)
+                colorResId = Resource.Color.tea_green;
+            else
+                colorResId = Resource.Color.bright_pink_crayola;
+
+            int colorInt = ContextCompat.GetColor(context, colorResId);
+            string hex = $"#{colorInt & 0xFFFFFF:X6}"; // Format as hex string like "#3CB371"
+            return hex;
         }
 
     }
