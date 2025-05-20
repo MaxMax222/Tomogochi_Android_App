@@ -74,6 +74,8 @@
     <Compile Include="Classes\FirebaseHelper.cs" />
     <Compile Include="Classes\BGupdateFBlistener.cs" />
     <Compile Include="Fragments\ShopFragment.cs" />
+    <Compile Include="Classes\BalanceUpdateFBlistener.cs" />
+    <Compile Include="Adapters\ShopAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -136,6 +138,14 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\shop_food_item.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\shop_screen.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
@@ -170,6 +180,7 @@
     <Folder Include="Activities\" />
     <Folder Include="Fragments\" />
     <Folder Include="Classes\" />
+    <Folder Include="Adapters\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\google-services.json" />

@@ -14,7 +14,6 @@ using Android.Widget;
 using Bumptech.Glide;
 using FinalProj_Tomogochi.Classes;
 using System.Linq;
-using ShopMiniProj.Classes;
 using Firebase.Firestore;
 using Android.Gms.Extensions;
 using Java.Util;

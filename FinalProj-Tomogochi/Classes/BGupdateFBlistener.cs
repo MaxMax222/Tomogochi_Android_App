@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Android.App;
 using Firebase.Firestore;
 using Microcharts;
-using ShopMiniProj.Classes;
 using SkiaSharp;
 using static Java.Util.Jar.Attributes;
 

@@ -9,7 +9,7 @@ using Android.App;
 using Java.Util;
 using Firebase.Storage;
 using static Xamarin.Essentials.Permissions;
-using ShopMiniProj.Classes;
+using FinalProj_Tomogochi.Classes;
 using Microcharts;
 using SkiaSharp;
 using Android.Content;
@@ -17,10 +17,10 @@ using AndroidX.Core.Content;
 
 namespace FinalProj_Tomogochi.Classes
 {
-	public class User
-	{
-		private static User _instance;
-		public List<Character> characters;
+    public class User
+    {
+        private static User _instance;
+        public List<Character> characters;
         public string FullName { get; private set; }
         public string Email { get; private set; }
         public string Username { get; private set; }
@@ -29,10 +29,12 @@ namespace FinalProj_Tomogochi.Classes
 
         public static FirebaseAuth FirebaseAuth { get; private set; }
         public static FirebaseFirestore database { get; private set; }
+        public BGupdateFBlistener BGlistener { get; set; }
+        public BalanceUpdateFBlistener BalanceListener { get; set; }
         public const string COLLECTION_NAME = "users";
 
         private User()
-		{
+        {
             database = FirebaseHelper.GetFirestore();
             FirebaseAuth = FirebaseHelper.GetFirebaseAuthentication();
             characters = new List<Character>();
@@ -116,7 +118,7 @@ namespace FinalProj_Tomogochi.Classes
             }
             catch (Exception ex)
             {
-                Toast.MakeText(Application.Context,$"Upload failed: {ex}",ToastLength.Long).Show();
+                Toast.MakeText(Application.Context, $"Upload failed: {ex}", ToastLength.Long).Show();
                 return null;
             }
         }
@@ -131,8 +133,8 @@ namespace FinalProj_Tomogochi.Classes
                 HashMap characterData = new HashMap();
                 characterData.Put("name", character.Name);
                 characterData.Put("avatar_path", character.avatar_path);
-                characterData.Put("balance",0.ToString());
-                characterData.Put("bgChange",0.ToString());
+                characterData.Put("balance", 0.ToString());
+                characterData.Put("bgChange", 0.ToString());
                 await characterDocRef.Set(characterData);
 
                 Toast.MakeText(Application.Context, "Character saved to Firestore!", ToastLength.Short).Show();
@@ -150,7 +152,7 @@ namespace FinalProj_Tomogochi.Classes
                 characters.Clear(); // clear existing list to avoid duplicates
                 var userReference = database.Collection(COLLECTION_NAME).Document(FirebaseAuth.CurrentUser.Uid);
                 var charactersCollectionSnapshot = (QuerySnapshot)await userReference.Collection("characters").Get();
-                foreach (var document in charactersCollectionSnapshot.Documents)    
+                foreach (var document in charactersCollectionSnapshot.Documents)
                 {
                     string name = document.GetString("name");
 
@@ -173,7 +175,7 @@ namespace FinalProj_Tomogochi.Classes
                     double balance = double.Parse(document.GetString("balance"));
                     int bgChange = int.Parse(document.GetString("bgChange"));
 
-                    Character character = new Character(name, avatarPath,balance,bgChange,BGs);
+                    Character character = new Character(name, avatarPath, balance, bgChange, BGs);
                     characters.Add(character);
                 }
             }
@@ -201,4 +203,3 @@ namespace FinalProj_Tomogochi.Classes
 
     }
 }
-

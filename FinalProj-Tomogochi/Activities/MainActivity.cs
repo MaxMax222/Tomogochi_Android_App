@@ -15,6 +15,9 @@ namespace FinalProj_Tomogochi.Activities
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         [System.Obsolete]
+        private AndroidX.Fragment.App.Fragment[] fragments;
+
+        [Obsolete]
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -23,7 +26,9 @@ namespace FinalProj_Tomogochi.Activities
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
-
+            fragments = new AndroidX.Fragment.App.Fragment[3];
+            fragments[0] = new CharacterFragment();
+            fragments[1] = new ShopFragment();
             navigation.SelectedItemId = Resource.Id.navigation_character;
 
         }
@@ -52,11 +57,11 @@ namespace FinalProj_Tomogochi.Activities
             switch (item.ItemId)
             {
                 case Resource.Id.navigation_character:
-                    selectedFragment = new CharacterFragment();
+                    selectedFragment = fragments[0];
                     break;
                 case Resource.Id.navigation_shop:
-                    Toast.MakeText(Application.Context, Resource.String.title_shop, ToastLength.Long).Show();
-                    return true;
+                    selectedFragment = fragments[1];
+                    break;
                 case Resource.Id.navigation_notifications:
                     Toast.MakeText(Application.Context, Resource.String.title_notifications, ToastLength.Long).Show();
                     return true;
@@ -71,5 +76,3 @@ namespace FinalProj_Tomogochi.Activities
         }
     }
 }
-
-

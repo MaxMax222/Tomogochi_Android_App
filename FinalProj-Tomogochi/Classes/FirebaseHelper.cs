@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using Xamarin.Essentials;
 
-namespace ShopMiniProj.Classes
+namespace FinalProj_Tomogochi.Classes
 {
     public static class FirebaseHelper
     {
