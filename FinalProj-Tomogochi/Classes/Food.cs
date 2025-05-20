@@ -32,5 +32,18 @@ namespace FinalProj_Tomogochi.Classes
             DecreaseImpact = lowerImpact;
             imgResource = imgId;
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Food other)
+            {
+                return this.Name == other.Name;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace FinalProj_Tomogochi.Adapters
 {
 	public class FoodIncentoryAapter : RecyclerView.Adapter
 	{
-        private readonly List<KeyValuePair<Food, int>> items;
+        private List<KeyValuePair<Food, int>> items;
 
         public FoodIncentoryAapter(Dictionary<Food, int> inventory)
 		{
@@ -34,6 +34,11 @@ namespace FinalProj_Tomogochi.Adapters
             var itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.inventory_item, parent, false);
             return new FoodViewHolder(itemView);
         }
+        public void UpdateInventory(Dictionary<Food, int> newInventory)
+        {
+            items = newInventory.ToList();
+            NotifyDataSetChanged();
+        }
     }
 
     public class FoodViewHolder : RecyclerView.ViewHolder
@@ -49,5 +54,7 @@ namespace FinalProj_Tomogochi.Adapters
             Effects = itemView.FindViewById<TextView>(Resource.Id.effectsText);
         }
     }
+
+    
 }
 

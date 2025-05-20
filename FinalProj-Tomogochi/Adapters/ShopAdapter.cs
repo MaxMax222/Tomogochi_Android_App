@@ -134,7 +134,7 @@ namespace FinalProj_Tomogochi.Adapters
         private void ChargeCharacter(Food food)
         {
             User.GetUserInstance().ActiveCharacter.Balance -= food.Price;
-            characterRef.Update("balance", User.GetUserInstance().ActiveCharacter.Balance);
+            characterRef.Update("balance", User.GetUserInstance().ActiveCharacter.Balance.ToString());
         }
     }
 }

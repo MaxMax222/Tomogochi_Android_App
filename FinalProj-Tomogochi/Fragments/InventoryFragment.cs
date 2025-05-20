@@ -14,7 +14,6 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using FinalProj_Tomogochi.Adapters;
 using FinalProj_Tomogochi.Classes;
-using FinalProj_Tomogochi.Adapters;
 
 namespace FinalProj_Tomogochi.Fragments
 {
@@ -22,21 +21,33 @@ namespace FinalProj_Tomogochi.Fragments
     public class InventoryFragment : AndroidX.Fragment.App.Fragment
     {
 		private Character character;
+        private InventoryUpdateFBlistener listener = User.GetUserInstance().InventoryListener;
 
+        private RecyclerView recyclerView;
+        private FoodIncentoryAapter adapter;
 
-		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
             character = User.GetUserInstance().ActiveCharacter;
 
             View view = inflater.Inflate(Resource.Layout.inventory_screen, container, false);
-            var recyclerView = view.FindViewById<RecyclerView>(Resource.Id.inventoryRecyclerView);
+            listener.OnInventoryRetrieved += Listener_OnInventoryRetrieved;
+
+
+            recyclerView = view.FindViewById<RecyclerView>(Resource.Id.inventoryRecyclerView);
             recyclerView.SetLayoutManager(new LinearLayoutManager(Application.Context));
 
             var inventory = character.Inventoiry;
-            var adapter = new FoodIncentoryAapter(inventory);
+            adapter = new FoodIncentoryAapter(inventory);
             recyclerView.SetAdapter(adapter);
 
             return view;
+        }
+
+        private void Listener_OnInventoryRetrieved(object sender, InventoryUpdateFBlistener.InventoryArgs e)
+        {
+            character.Inventoiry = e.Inventory;
+            adapter.UpdateInventory(e.Inventory);
         }
     }
 }

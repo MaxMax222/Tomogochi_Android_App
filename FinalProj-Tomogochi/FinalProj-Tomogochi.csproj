@@ -78,6 +78,7 @@
     <Compile Include="Adapters\ShopAdapter.cs" />
     <Compile Include="Adapters\FoodIncentoryAapter.cs" />
     <Compile Include="Fragments\InventoryFragment.cs" />
+    <Compile Include="Classes\InventoryUpdateFBlistener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

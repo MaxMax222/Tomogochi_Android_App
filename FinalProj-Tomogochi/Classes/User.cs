@@ -32,6 +32,7 @@ namespace FinalProj_Tomogochi.Classes
         public static FirebaseFirestore database { get; private set; }
         public BGupdateFBlistener BGlistener { get; set; }
         public BalanceUpdateFBlistener BalanceListener { get; set; }
+        public InventoryUpdateFBlistener InventoryListener { get; set; }
         public const string COLLECTION_NAME = "users";
 
         private User()

@@ -85,6 +85,7 @@ namespace FinalProj_Tomogochi.Activities
                 User.GetUserInstance().ActiveCharacter = characters[index];
                 User.GetUserInstance().BGlistener =  new BGupdateFBlistener();
                 User.GetUserInstance().BalanceListener =  new BalanceUpdateFBlistener();
+                User.GetUserInstance().InventoryListener = new InventoryUpdateFBlistener();
                 StartActivity(new Intent(this, typeof(MainActivity)));
             }
             else
