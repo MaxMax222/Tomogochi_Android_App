@@ -109,16 +109,16 @@ namespace FinalProj_Tomogochi.Adapters
                 {
                     // Add new food document
                     var foodData = new Dictionary<string, Java.Lang.Object>
-            {
-                { "name", food.Name },
-                { "raiseChance", food.BG_IncreaseChance },
-                { "raiseImpact", food.IncreaseImpact },
-                { "lowerChance", food.BG_DecreaseChance },
-                { "lowerImpact", food.DecreaseImpact },
-                { "price", food.Price },
-                { "quantity", 1 },
-                {"id", food.imgResource }
-            };
+                    {
+                        { "name", food.Name },
+                        { "raiseChance", food.BG_IncreaseChance },
+                        { "raiseImpact", food.IncreaseImpact },
+                        { "lowerChance", food.BG_DecreaseChance },
+                        { "lowerImpact", food.DecreaseImpact },
+                        { "price", food.Price },
+                        { "quantity", 1 },
+                        {"id", food.imgResource }
+                    };
                     await foodDocRef.Set(foodData);
                 }
 

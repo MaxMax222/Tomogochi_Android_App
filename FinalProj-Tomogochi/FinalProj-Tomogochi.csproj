@@ -76,6 +76,8 @@
     <Compile Include="Fragments\ShopFragment.cs" />
     <Compile Include="Classes\BalanceUpdateFBlistener.cs" />
     <Compile Include="Adapters\ShopAdapter.cs" />
+    <Compile Include="Adapters\FoodIncentoryAapter.cs" />
+    <Compile Include="Fragments\InventoryFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -146,6 +148,14 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\inventory_item.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\inventory_screen.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
@@ -174,6 +184,15 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Storage">
       <Version>60.1142.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.ConstraintLayout">
+      <Version>2.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.RecyclerView">
+      <Version>1.2.1.8</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.CardView">
+      <Version>1.0.0.15</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

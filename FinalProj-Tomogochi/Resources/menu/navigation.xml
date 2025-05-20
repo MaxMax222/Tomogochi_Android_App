@@ -10,8 +10,8 @@
         android:title="shop" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:title="notifications" />
+        android:id="@+id/navigation_inventory"
+        android:title="inventory" />
 
 </menu>
 

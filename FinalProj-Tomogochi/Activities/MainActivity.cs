@@ -29,6 +29,7 @@ namespace FinalProj_Tomogochi.Activities
             fragments = new AndroidX.Fragment.App.Fragment[3];
             fragments[0] = new CharacterFragment();
             fragments[1] = new ShopFragment();
+            fragments[2] = new InventoryFragment();
             navigation.SelectedItemId = Resource.Id.navigation_character;
 
         }
@@ -62,9 +63,9 @@ namespace FinalProj_Tomogochi.Activities
                 case Resource.Id.navigation_shop:
                     selectedFragment = fragments[1];
                     break;
-                case Resource.Id.navigation_notifications:
-                    Toast.MakeText(Application.Context, Resource.String.title_notifications, ToastLength.Long).Show();
-                    return true;
+                case Resource.Id.navigation_inventory:
+                    selectedFragment = fragments[2];
+                    break;
             }
 
             if (selectedFragment != null)
