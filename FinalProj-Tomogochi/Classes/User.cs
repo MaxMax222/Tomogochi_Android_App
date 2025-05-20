@@ -14,6 +14,7 @@ using Microcharts;
 using SkiaSharp;
 using Android.Content;
 using AndroidX.Core.Content;
+using System.Runtime.Remoting.Contexts;
 
 namespace FinalProj_Tomogochi.Classes
 {
@@ -171,11 +172,42 @@ namespace FinalProj_Tomogochi.Classes
                         });
                     }
 
+                    var inventoryRef = userReference.Collection("characters").Document(name).Collection("inventory");
+                    var inventroySnapshot = (QuerySnapshot)await inventoryRef.Get();
+                    var inventory = new Dictionary<Food, int>();
+                    foreach (var foodDoc in inventroySnapshot.Documents)
+                    {
+                        var data = foodDoc.Data;
+
+                        if (data.TryGetValue("name", out var nameObj) &&
+                            data.TryGetValue("raiseChance", out var raiseChanceObj) &&
+                            data.TryGetValue("raiseImpact", out var raiseImpactObj) &&
+                            data.TryGetValue("lowerChance", out var lowerChanceObj) &&
+                            data.TryGetValue("lowerImpact", out var lowerImpactObj) &&
+                            data.TryGetValue("price", out var priceObj) &&
+                            data.TryGetValue("quantity", out var quantityObj) &&
+                            data.TryGetValue("id", out var idObj))
+                        {
+                            var food = new Food(Application.Context,
+                                                nameObj.ToString(),
+                                                Convert.ToSingle(raiseChanceObj),
+                                                Convert.ToInt32(raiseImpactObj),
+                                                Convert.ToSingle(lowerChanceObj),
+                                                Convert.ToInt32(lowerImpactObj),
+                                                Convert.ToDouble(priceObj),
+                                                Convert.ToInt32(idObj));
+
+                            int quantity = Convert.ToInt32(quantityObj);
+
+                            inventory[food] = quantity;
+                        }
+                    }
+
                     string avatarPath = document.GetString("avatar_path");
                     double balance = double.Parse(document.GetString("balance"));
                     int bgChange = int.Parse(document.GetString("bgChange"));
 
-                    Character character = new Character(name, avatarPath, balance, bgChange, BGs);
+                    Character character = new Character(name, avatarPath, balance, bgChange, BGs, inventory);
                     characters.Add(character);
                 }
             }
@@ -185,7 +217,7 @@ namespace FinalProj_Tomogochi.Classes
             }
         }
 
-        public static string GetColorString(int sugar, Context context)
+        public static string GetColorString(int sugar, Android.Content.Context context)
         {
             int colorResId;
 

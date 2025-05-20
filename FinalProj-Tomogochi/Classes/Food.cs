@@ -22,5 +22,15 @@ namespace FinalProj_Tomogochi.Classes
             DecreaseImpact = lowerImpact;
             imgResource = context.Resources.GetIdentifier(name.ToLower(), "drawable", context.PackageName);
         }
+        public Food(Context context, string name, float raiseChance, int raiseImpact, float lowerChance, int lowerImpact, double price, int imgId)
+        {
+            Price = price;
+            Name = name;
+            BG_IncreaseChance = raiseChance;
+            IncreaseImpact = raiseImpact;
+            BG_DecreaseChance = lowerChance;
+            DecreaseImpact = lowerImpact;
+            imgResource = imgId;
+        }
     }
 }

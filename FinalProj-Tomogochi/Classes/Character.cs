@@ -21,6 +21,8 @@ namespace FinalProj_Tomogochi.Classes
         private Random rnd = new Random();
         public DateTime LastActive { get; set; }
         public double Balance { get; set; }
+        public Dictionary<Food, int> Inventoiry;
+
 		public Character(string name, string path)
 		{
             Name = name;
@@ -35,13 +37,14 @@ namespace FinalProj_Tomogochi.Classes
          
 		}
 
-        public Character(string name, string path, double balance, int bgChange, List<ChartEntry> BGs)
+        public Character(string name, string path, double balance, int bgChange, List<ChartEntry> BGs, Dictionary<Food,int> inventory)
         {
             Name = name;
             avatar_path = path;
             Balance = balance;
             LastBGs = BGs;
             BG_Change = bgChange;
+            Inventoiry = inventory;
         }
 
 		public void UpdateChart(ChartView chartView)
