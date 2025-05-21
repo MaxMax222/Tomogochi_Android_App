@@ -8,6 +8,9 @@ using Microcharts.Droid;
 using SkiaSharp;
 using AndroidX.Core.Content;
 using Android.App;
+using Firebase.Firestore;
+using System.Threading.Tasks;
+using Android.Gms.Extensions;
 
 namespace FinalProj_Tomogochi.Classes
 {
@@ -75,8 +78,11 @@ namespace FinalProj_Tomogochi.Classes
             LastBGs.Add(BG);
         }
 
-        public void EatFood(Food food)
-        {
+        [Obsolete]
+        public async Task EatFoodAsync(Food food)
+        { 
+            Inventoiry[food]--;
+            await UpdateFBinventoryAsync();
             bool raises = rnd.NextDouble() < food.BG_IncreaseChance;
             bool lowers = rnd.NextDouble() < food.BG_DecreaseChance;
 
@@ -85,6 +91,36 @@ namespace FinalProj_Tomogochi.Classes
                 return; }
             if (lowers) {
                 BG_Change -= food.DecreaseImpact;
+            }
+        }
+
+        [Obsolete]
+        private async Task UpdateFBinventoryAsync()
+        {
+            var userReference = FirebaseHelper.GetFirestore().Collection("users").Document(FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid);
+            var inventoryRef = userReference.Collection("characters").Document(Name).Collection("inventory");
+
+            foreach (var entry in Inventoiry)
+            {
+                var food = entry.Key;
+                var quantity = entry.Value;
+
+                var foodDocRef = inventoryRef.Document(food.Name);
+
+                if (quantity <= 0)
+                {
+                    // Delete the food from Firestore if it's no longer in the inventory
+                    await foodDocRef.Delete();
+                }
+                else
+                {
+                    // Update the quantity
+                    var update = new Dictionary<string, Java.Lang.Object>
+                    {
+                        { "quantity", new Java.Lang.Integer(quantity) }
+                    };
+                    await foodDocRef.Update(update);
+                }
             }
         }
 

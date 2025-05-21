@@ -96,7 +96,7 @@ namespace FinalProj_Tomogochi.Adapters
             try
             {
                 // Use the food name as the document ID
-                var foodDocRef = inventoryRef.Document(food.Name.ToLower());
+                var foodDocRef = inventoryRef.Document(food.Name);
                 var snapshot = (DocumentSnapshot)await foodDocRef.Get();
 
                 if (snapshot.Exists())
