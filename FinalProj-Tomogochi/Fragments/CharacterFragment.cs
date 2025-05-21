@@ -20,6 +20,7 @@ using Java.Util;
 using Java.Security;
 using Java.Lang;
 using Android.Icu.Lang;
+using FinalProj_Tomogochi.Services;
 
 namespace FinalProj_Tomogochi.Fragments
 {
@@ -30,10 +31,7 @@ namespace FinalProj_Tomogochi.Fragments
         private List<ChartEntry> entries;
         private ChartView chartView;
         private TextView balance;
-        private System.Timers.Timer timer;
         Classes.Character character;
-        CollectionReference BGcollectionRef;
-        DocumentReference characterRef;
         [Obsolete]
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -56,59 +54,18 @@ namespace FinalProj_Tomogochi.Fragments
 
             character.UpdateChart(chartView);
 
-            characterRef = FirebaseHelper.GetFirestore()
-                    .Collection("users").Document(FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid)
-                    .Collection("characters").Document(User.GetUserInstance().ActiveCharacter.Name);
-
-            BGcollectionRef = characterRef.Collection("lastBGs");
-            timer = new System.Timers.Timer(1000 * 20);
-            timer.Elapsed += Timer_Elapsed;
-            timer.AutoReset = true;  // true = repeat
-            timer.Enabled = true;
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                Context.StartForegroundService(new Intent(Context, typeof(BGupdate)));
+            }
+            else
+            {
+                Context.StartService(new Intent(Context, typeof(BGupdate)));
+            }
 
             listener.OnBGEntryRetrieved += Listener_OnBGEntryRetrieved;
             return view;
         }
-
-
-
-        private async void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                var time = DateTime.Now;
-
-                character.UpdateBG();
-
-                var updates = new Dictionary<string, Java.Lang.Object> {
-                { "balance", new Java.Lang.String(character.Balance.ToString()) },
-                { "bgChange", new Java.Lang.String(character.BG_Change.ToString()) }
-                };
-                await characterRef.Update(updates);
-                // Only add the *latest* entry, don't delete and re-add all
-                var bgMap = new HashMap();
-                bgMap.Put("label", time.ToString("HH:mm"));
-                bgMap.Put("value", character.CurrentBG);
-                await BGcollectionRef.Add(bgMap);
-
-                // Optional: trim older entries if count exceeds 10
-                QuerySnapshot snapshot = (QuerySnapshot)await BGcollectionRef.OrderBy("label").Get();
-                if (snapshot.Documents.Count > 10)
-                {
-                    int excess = snapshot.Documents.Count - 10;
-                    for (int i = 0; i < excess; i++)
-                    {
-                        await snapshot.Documents[i].Reference.Delete();
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Toast.MakeText(Application.Context, $"Timer update failed: {ex.Message}", ToastLength.Long).Show();
-            }
-          
-        }
-
 
         private void Listener_OnBGEntryRetrieved(object sender, BGupdateFBlistener.BGEntriesEventArgs e)
         {

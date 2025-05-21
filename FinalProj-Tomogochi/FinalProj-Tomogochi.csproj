@@ -79,6 +79,7 @@
     <Compile Include="Adapters\FoodIncentoryAapter.cs" />
     <Compile Include="Fragments\InventoryFragment.cs" />
     <Compile Include="Classes\InventoryUpdateFBlistener.cs" />
+    <Compile Include="Services\BGupdate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -201,6 +202,7 @@
     <Folder Include="Fragments\" />
     <Folder Include="Classes\" />
     <Folder Include="Adapters\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\google-services.json" />

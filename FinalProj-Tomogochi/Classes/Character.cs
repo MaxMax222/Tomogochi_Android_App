@@ -34,16 +34,17 @@ namespace FinalProj_Tomogochi.Classes
                 Color = SKColor.Parse(User.GetColorString(CurrentBG, Application.Context))
             } };
             BG_Change = 0;
-         
+            Inventoiry = new Dictionary<Food, int>();
 		}
 
-        public Character(string name, string path, double balance, int bgChange, List<ChartEntry> BGs, Dictionary<Food,int> inventory)
+        public Character(string name, string path, double balance, int bgChange,int currentBg, List<ChartEntry> BGs, Dictionary<Food,int> inventory)
         {
             Name = name;
             avatar_path = path;
             Balance = balance;
             LastBGs = BGs;
             BG_Change = bgChange;
+            CurrentBG = currentBg;
             Inventoiry = inventory;
         }
 

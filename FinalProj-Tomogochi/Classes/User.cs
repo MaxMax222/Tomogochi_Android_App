@@ -158,7 +158,7 @@ namespace FinalProj_Tomogochi.Classes
                 {
                     string name = document.GetString("name");
 
-                    var bgsRef = userReference.Collection("characters").Document(name).Collection("lastBGs");
+                    var bgsRef = userReference.Collection("characters").Document(name).Collection("lastBGs").OrderBy("label");
                     var bgSnapshot = (QuerySnapshot)await bgsRef.Get();
                     var BGs = new List<ChartEntry>();
                     foreach (DocumentSnapshot BG in bgSnapshot.Documents)
@@ -207,8 +207,8 @@ namespace FinalProj_Tomogochi.Classes
                     string avatarPath = document.GetString("avatar_path");
                     double balance = double.Parse(document.GetString("balance"));
                     int bgChange = int.Parse(document.GetString("bgChange"));
-
-                    Character character = new Character(name, avatarPath, balance, bgChange, BGs, inventory);
+                    int currentBg = (int)BGs[BGs.Count - 1].Value;
+                    Character character = new Character(name, avatarPath, balance, bgChange,currentBg, BGs, inventory);
                     characters.Add(character);
                 }
             }
