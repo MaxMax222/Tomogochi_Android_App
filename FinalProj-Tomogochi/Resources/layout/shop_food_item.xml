@@ -34,19 +34,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 				android:id="@+id/food_name_txt"
+				style="@style/CustomTextViewStyle"
 				android:textSize="20sp"/>
 
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textSize="18sp"
-				android:textColor="@color/colorPrimary"
-				android:id="@+id/price_txt" />
+				style="@style/CustomTextViewStyle"
+				android:id="@+id/price_txt"
+				android:textColor="@color/maize_yellow"/>
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:id="@+id/food_info_txt"
-				android:textSize="18sp"/>
+				style="@style/CustomTextViewStyle"/>
 		</LinearLayout>
 	</LinearLayout>
 
@@ -69,6 +70,7 @@
 				android:layout_height="wrap_content"
 				android:text="purchase"
 				android:id="@+id/purchase_btn"
+				style="@style/CustomButtonStyle"
 			/>
 
 

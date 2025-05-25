@@ -223,11 +223,11 @@ namespace FinalProj_Tomogochi.Classes
             int colorResId;
 
             if (sugar > 70 && sugar < 180)
-                colorResId = Resource.Color.hunter_green;
+                colorResId = Resource.Color.hookers_green;
             else if (sugar >= 180)
-                colorResId = Resource.Color.tea_green;
+                colorResId = Resource.Color.maize_yellow;
             else
-                colorResId = Resource.Color.bright_pink_crayola;
+                colorResId = Resource.Color.imperial_red;
 
             int colorInt = ContextCompat.GetColor(context, colorResId);
             string hex = $"#{colorInt & 0xFFFFFF:X6}"; // Format as hex string like "#3CB371"

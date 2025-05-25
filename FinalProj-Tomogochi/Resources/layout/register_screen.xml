@@ -13,20 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:hint="@string/Fname"
-        android:layout_margin="8dp"
-        android:inputType="text"/>
+        android:inputType="text"
+        style="@style/CustomEditTextStyle"/>
       <EditText
         android:id="@+id/username_edittxt"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:hint="@string/username"
-        android:layout_margin="8dp"
+        style="@style/CustomEditTextStyle"
         android:inputType="text"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:hint="@string/email"
-         android:layout_margin="8dp"
+        style="@style/CustomEditTextStyle"
         android:id="@+id/email_edittxt"
         android:inputType="textEmailAddress"/>
     
@@ -34,14 +34,14 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:hint="@string/pass"
-        android:layout_margin="8dp"
+        style="@style/CustomEditTextStyle"
         android:id="@+id/password_edittxt"
         android:inputType="textPassword"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:hint="@string/conf_pass"
-        android:layout_margin="8dp"
+        style="@style/CustomEditTextStyle"
         android:id="@+id/confirm_password_edittxt"
         android:inputType="textPassword"/>
 
@@ -49,23 +49,17 @@
     <Button
         android:id="@+id/register_btn"
         android:layout_width="165dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:text="@string/register"
-        android:layout_margin="8dp"
         app:cornerRadius="16dp"
-        android:textAllCaps="false"
-        android:backgroundTint="@color/dark_purple"
-        android:textColor="@android:color/white"/>
+        style="@style/CustomButtonStyle"/>
 
      <Button
         android:id="@+id/cencel_btn"
         android:layout_width="165dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:text="@string/cencel"
-        android:layout_margin="8dp"
         app:cornerRadius="16dp"
-        android:textAllCaps="false"
-        android:backgroundTint="@color/dark_purple"
-        android:textColor="@android:color/white"/>
+         style="@style/CustomButtonStyle"/>
 </LinearLayout>
 

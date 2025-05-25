@@ -56,7 +56,7 @@ namespace FinalProj_Tomogochi.Classes
             var chart = new LineChart
             {
                 Entries = LastBGs,
-                BackgroundColor = SKColor.Parse("#f7ecdc"),
+                BackgroundColor = SKColor.Parse("#C6DDF0"),
                 LineMode = LineMode.Spline,
                 LineSize = 5,
                 LabelTextSize = 30,

@@ -79,7 +79,7 @@ namespace FinalProj_Tomogochi.Adapters
             int pos = (int)button.Tag;
             Food food = _foods[pos];
 
-            if (User.GetUserInstance().ActiveCharacter.Balance > food.Price)
+            if (User.GetUserInstance().ActiveCharacter.Balance >= food.Price)
             {
                 // add food to inventory firebase inventory, update balance on firebase
                 AddToInventory(food);

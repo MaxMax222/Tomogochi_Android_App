@@ -16,7 +16,9 @@
         android:id="@+id/balance_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        style="@style/CustomTextViewStyle"
+        />
 
     <ImageView
         android:id="@+id/avatar_img"
@@ -28,5 +30,6 @@
         android:id="@+id/char_name_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        style="@style/CustomTextViewStyle"/>
 </LinearLayout>

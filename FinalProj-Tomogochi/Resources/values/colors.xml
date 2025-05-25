@@ -1,18 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="uranian_blue">#abdafc</color>             <!-- Light background or highlight -->
-    <color name="marian_blue">#3f4381</color>              <!-- Primary / toolbar / status bar -->
-    <color name="bright_pink_crayola">#ef798a</color>                 <!-- Accent / buttons / highlights -->
-    <color name="tea_green">#DDEDAA</color>                    <!-- Secondary UI elements -->
-    <color name="hunter_green">#3F6C51</color>      <!-- Error / warnings -->
-    <color name="dark_purple">#750e9e</color>
-
+    <!-- Base Colors -->
+    <color name="amethyst">#9B5DE5</color>              <!-- Primary -->
+    <color name="ash_gray">#CAD2C5</color>              <!-- Background -->
+    <color name="cambridge_blue">#84A98C</color>        <!-- Accent -->
+    <color name="hookers_green">#52796F</color>         <!-- Secondary -->
+    <color name="cinnabar">#E55934</color>              <!-- Error / Highlight -->
+    <color name="imperial_red">#D72638</color>          <!-- Error -->
+    <color name="maize_yellow">#AC890C</color>          <!-- Attention / Highlight -->
 
     <!-- Assign palette colors to theme attributes -->
-    <color name="colorPrimary">@color/bright_pink_crayola</color>
-    <color name="colorPrimaryDark">@color/marian_blue</color>
-    <color name="colorAccent">@color/tea_green</color>
-    <color name="colorSecondary">@color/hunter_green</color> <!-- Custom usage -->
-    <color name="colorBackground">@color/uranian_blue</color> <!-- Light BG -->
+       <color name="colorPrimary">@color/amethyst</color>
+    <color name="colorPrimaryDark">@color/hookers_green</color>
+    <color name="colorAccent">@color/cambridge_blue</color>
+    <color name="colorBackground">@color/ash_gray</color>
+    <color name="colorError">@color/imperial_red</color>
+    <color name="colorWarning">@color/cinnabar</color>
+    <color name="colorSuccess">@color/cambridge_blue</color>
+    <color name="colorHighlight">@color/maize_yellow</color>
+
 </resources>
 

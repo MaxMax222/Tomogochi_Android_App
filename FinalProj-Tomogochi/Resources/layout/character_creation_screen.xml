@@ -87,7 +87,7 @@
             android:text="Character Name: "/>
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:inputType="text"
             android:id="@+id/character_name_edttxt"/>
         </LinearLayout>
@@ -95,8 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="create character"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/dark_purple"
+     style="@style/CustomButtonStyle"
         android:id="@+id/create_btn"/>
 
 </LinearLayout>
