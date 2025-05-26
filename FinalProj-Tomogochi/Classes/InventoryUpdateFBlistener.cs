@@ -18,10 +18,10 @@ namespace FinalProj_Tomogochi.Classes
 
         public InventoryUpdateFBlistener()
         {
-            var character = User.GetUserInstance().ActiveCharacter;
+            var character = User.GetUserInstance().Character;
 
             FirebaseHelper.GetFirestore()
-                .Collection($"users/{FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid}/characters")
+                .Collection($"characters")
                 .Document(character.Name)
                 .Collection("inventory")
                 .AddSnapshotListener(this);

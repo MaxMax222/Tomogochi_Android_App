@@ -16,7 +16,7 @@ namespace FinalProj_Tomogochi.Classes
 
         public BalanceUpdateFBlistener()
         {
-            FirebaseHelper.GetFirestore().Collection($"users/{FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid}/characters").Document(User.GetUserInstance().ActiveCharacter.Name).AddSnapshotListener(this);
+            FirebaseHelper.GetFirestore().Collection($"characters").Document(User.GetUserInstance().Character.Name).AddSnapshotListener(this);
         }
 
         public void OnEvent(Java.Lang.Object value, FirebaseFirestoreException error)

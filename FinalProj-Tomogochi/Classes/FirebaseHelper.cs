@@ -23,7 +23,7 @@ namespace FinalProj_Tomogochi.Classes
 
         public static FirebaseFirestore GetFirestore() =>  FirebaseFirestore.GetInstance(RetrieveApp());
         public static FirebaseAuth GetFirebaseAuthentication() => FirebaseAuth.Instance;
-        public static FirebaseStorage GetFirebaseStorage() => FirebaseStorage.GetInstance(RetrieveApp());
+        public static FirebaseStorage GetFirebaseStorage() => FirebaseStorage.GetInstance("gs://tomogochi-finalproj.firebasestorage.app/");
 
         private static FirebaseApp RetrieveApp()
         {

@@ -21,7 +21,7 @@ namespace FinalProj_Tomogochi.Fragments
         [Obsolete]
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            character = User.GetUserInstance().ActiveCharacter;
+            character = User.GetUserInstance().Character;
             View view = inflater.Inflate(Resource.Layout.shop_screen, container, false);
             listener.onBalanceRetrieved += Listener_onBalanceRetrieved;
 

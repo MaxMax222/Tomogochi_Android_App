@@ -42,7 +42,7 @@ namespace FinalProj_Tomogochi.Adapters
             int position = (int)button.Tag;
             var item = items[position];
             // Do something with the item or position
-            await User.GetUserInstance().ActiveCharacter.EatFoodAsync(item.Key);
+            await User.GetUserInstance().Character.EatFoodAsync(item.Key);
         }
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
@@ -52,7 +52,7 @@ namespace FinalProj_Tomogochi.Adapters
         public void UpdateInventory(Dictionary<Food, int> newInventory)
         {
             items = newInventory.ToList();
-            User.GetUserInstance().ActiveCharacter.Inventoiry = newInventory;
+            User.GetUserInstance().Character.Inventoiry = newInventory;
             NotifyDataSetChanged();
         }
     }

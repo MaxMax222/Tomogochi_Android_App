@@ -24,10 +24,8 @@ namespace FinalProj_Tomogochi.Adapters
             _foods = foods;
 
             characterRef = FirebaseHelper.GetFirestore()
-                .Collection("users")
-                .Document(FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid)
                 .Collection("characters")
-                .Document(User.GetUserInstance().ActiveCharacter.Name);
+                .Document(User.GetUserInstance().Character.Name);
             inventoryRef = characterRef.Collection("inventory");
         }
 
@@ -79,7 +77,7 @@ namespace FinalProj_Tomogochi.Adapters
             int pos = (int)button.Tag;
             Food food = _foods[pos];
 
-            if (User.GetUserInstance().ActiveCharacter.Balance >= food.Price)
+            if (User.GetUserInstance().Character.Balance >= food.Price)
             {
                 // add food to inventory firebase inventory, update balance on firebase
                 AddToInventory(food);
@@ -133,8 +131,8 @@ namespace FinalProj_Tomogochi.Adapters
 
         private void ChargeCharacter(Food food)
         {
-            User.GetUserInstance().ActiveCharacter.Balance -= food.Price;
-            characterRef.Update("balance", User.GetUserInstance().ActiveCharacter.Balance.ToString());
+            User.GetUserInstance().Character.Balance -= food.Price;
+            characterRef.Update("balance", User.GetUserInstance().Character.Balance.ToString());
         }
     }
 }

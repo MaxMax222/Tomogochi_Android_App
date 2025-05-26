@@ -21,12 +21,10 @@ namespace FinalProj_Tomogochi.Classes
     public class User
     {
         private static User _instance;
-        public List<Character> characters;
+        public Character Character { get; set; }
         public string FullName { get; private set; }
         public string Email { get; private set; }
         public string Username { get; private set; }
-        public Character ActiveCharacter { get; set; }
-
 
         public static FirebaseAuth FirebaseAuth { get; private set; }
         public static FirebaseFirestore database { get; private set; }
@@ -39,7 +37,6 @@ namespace FinalProj_Tomogochi.Classes
         {
             database = FirebaseHelper.GetFirestore();
             FirebaseAuth = FirebaseHelper.GetFirebaseAuthentication();
-            characters = new List<Character>();
         }
 
         public static User GetUserInstance()
@@ -53,6 +50,7 @@ namespace FinalProj_Tomogochi.Classes
             try
             {
                 await FirebaseAuth.SignInWithEmailAndPassword(Email, Password);
+                //TODO: load the character
 
             }
             catch (Exception Ex)
@@ -110,7 +108,7 @@ namespace FinalProj_Tomogochi.Classes
         {
             try
             {
-                var storage = FirebaseStorage.GetInstance("gs://tomogochi-finalproj.firebasestorage.app/"); //FirebaseStorage storage = FirebaseStorage.getInstance("gs://my-custom-bucket");
+                var storage = FirebaseHelper.GetFirebaseStorage();
                 var storageRef = storage.GetReference(in_storage_path);
 
                 await storageRef.PutBytes(file_bytes);
@@ -129,17 +127,30 @@ namespace FinalProj_Tomogochi.Classes
         {
             try
             {
-                var userReference = database.Collection(COLLECTION_NAME).Document(FirebaseAuth.CurrentUser.Uid);
-                var characterDocRef = userReference.Collection("characters").Document(character.Name);
+                var characterCollection = database.Collection("characters");
+                var characterDocRef = characterCollection.Document(character.Name); 
 
+                // Save character data
                 HashMap characterData = new HashMap();
                 characterData.Put("name", character.Name);
                 characterData.Put("avatar_path", character.avatar_path);
-                characterData.Put("balance", 0.ToString());
-                characterData.Put("bgChange", 0.ToString());
+                characterData.Put("balance", character.Balance.ToString());
+                characterData.Put("bgChange", character.BG_Change.ToString());
+
                 await characterDocRef.Set(characterData);
 
-                Toast.MakeText(Application.Context, "Character saved to Firestore!", ToastLength.Short).Show();
+                // ad the first BG
+                var BGref = characterCollection.Document(character.Name).Collection("lastBGs");
+                var bgMap = new HashMap();
+                bgMap.Put("label", DateTime.Now.ToString("HH:mm"));
+                bgMap.Put("value", character.CurrentBG);
+                await BGref.Add(bgMap);
+
+                // Link to user
+                var userRef = database.Collection(COLLECTION_NAME).Document(FirebaseAuth.CurrentUser.Uid);
+                await userRef.Update("characterRef", characterDocRef);
+
+                Toast.MakeText(Application.Context, "Character saved!", ToastLength.Short).Show();
             }
             catch (Exception ex)
             {
@@ -147,22 +158,25 @@ namespace FinalProj_Tomogochi.Classes
             }
         }
 
-        public async Task LoadCharactersFromFirestoreAsync()
+
+        public async Task LoadCharacterFromFirestoreAsync()
         {
             try
             {
-                characters.Clear(); // clear existing list to avoid duplicates
                 var userReference = database.Collection(COLLECTION_NAME).Document(FirebaseAuth.CurrentUser.Uid);
-                var charactersCollectionSnapshot = (QuerySnapshot)await userReference.Collection("characters").Get();
-                foreach (var document in charactersCollectionSnapshot.Documents)
-                {
-                    string name = document.GetString("name");
+                var userDoc = (DocumentSnapshot)await userReference.Get();
+                var charactersCollectionRef = database.Collection("characters");
 
-                    var bgsRef = userReference.Collection("characters").Document(name).Collection("lastBGs").OrderBy("label");
+                var charDocRef = userDoc.GetDocumentReference("characterRef");
+                var charDoc = (DocumentSnapshot)await charDocRef.Get();
+
+                    string name = charDoc.GetString("name");
+
+                    var bgsRef = charDocRef.Collection("lastBGs").OrderBy("label");
                     var bgSnapshot = (QuerySnapshot)await bgsRef.Get();
                     var BGs = new List<ChartEntry>();
                     foreach (DocumentSnapshot BG in bgSnapshot.Documents)
-                    {
+                    {   
                         string label = BG.Get("label").ToString();
                         string BGvalue = BG.Get("value").ToString();
                         BGs.Add(new ChartEntry(int.Parse(BGvalue))
@@ -173,7 +187,7 @@ namespace FinalProj_Tomogochi.Classes
                         });
                     }
 
-                    var inventoryRef = userReference.Collection("characters").Document(name).Collection("inventory");
+                    var inventoryRef = charDocRef.Collection("inventory");
                     var inventroySnapshot = (QuerySnapshot)await inventoryRef.Get();
                     var inventory = new Dictionary<Food, int>();
                     foreach (var foodDoc in inventroySnapshot.Documents)
@@ -204,13 +218,15 @@ namespace FinalProj_Tomogochi.Classes
                         }
                     }
 
-                    string avatarPath = document.GetString("avatar_path");
-                    double balance = double.Parse(document.GetString("balance"));
-                    int bgChange = int.Parse(document.GetString("bgChange"));
+                    string avatarPath = charDoc.GetString("avatar_path");
+                    double balance = double.Parse(charDoc.GetString("balance"));
+                    int bgChange = int.Parse(charDoc.GetString("bgChange"));
                     int currentBg = (int)BGs[BGs.Count - 1].Value;
-                    Character character = new Character(name, avatarPath, balance, bgChange,currentBg, BGs, inventory);
-                    characters.Add(character);
-                }
+                    Character = new Character(name, avatarPath, balance, bgChange,currentBg, BGs, inventory);
+                    BGlistener = new BGupdateFBlistener();
+                    BalanceListener = new BalanceUpdateFBlistener();
+                    InventoryListener = new InventoryUpdateFBlistener();
+
             }
             catch (Exception ex)
             {

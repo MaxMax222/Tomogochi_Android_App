@@ -97,8 +97,7 @@ namespace FinalProj_Tomogochi.Classes
         [Obsolete]
         private async Task UpdateFBinventoryAsync()
         {
-            var userReference = FirebaseHelper.GetFirestore().Collection("users").Document(FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid);
-            var inventoryRef = userReference.Collection("characters").Document(Name).Collection("inventory");
+            var inventoryRef = FirebaseHelper.GetFirestore().Collection("characters").Document(Name).Collection("inventory");
 
             foreach (var entry in Inventoiry)
             {

@@ -27,10 +27,10 @@ namespace FinalProj_Tomogochi.Services
         {
             base.OnCreate();
 
-            character = User.GetUserInstance().ActiveCharacter;
+            character = User.GetUserInstance().Character;
             characterRef = FirebaseHelper.GetFirestore()
-                .Collection("users").Document(FirebaseHelper.GetFirebaseAuthentication().CurrentUser.Uid)
-                .Collection("characters").Document(character.Name);
+                .Collection("characters")
+                .Document(character.Name);
 
             BGcollectionRef = characterRef.Collection("lastBGs");
 

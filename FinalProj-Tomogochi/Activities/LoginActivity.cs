@@ -1,11 +1,14 @@
 ﻿
 using System;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Gms.Extensions;
 using Android.OS;
 using Android.Widget;
 using FinalProj_Tomogochi.Classes;
+using Firebase.Auth;
+using Firebase.Firestore;
 
 namespace FinalProj_Tomogochi.Activities
 {
@@ -69,9 +72,8 @@ namespace FinalProj_Tomogochi.Activities
             {
                 if (await User.Login(enteredEmail, enteredPassword))
                 {
-                    //_ = user.FetchUserData();
                     SaveUserPreferences(enteredEmail, enteredPassword);
-                    NavigateToMain();
+                    await NavigateToMainAsync();
                 }
                 else
                 {
@@ -111,11 +113,25 @@ namespace FinalProj_Tomogochi.Activities
             }
         }
 
-        private void NavigateToMain()
+        private async Task NavigateToMainAsync()
         {
-            var intent = new Intent(this, typeof(SaveSlotsActivity));
+            Intent intent;
+            var userRef = User.database.Collection("users").Document(User.FirebaseAuth.CurrentUser.Uid);
+            var userDoc = (DocumentSnapshot)await userRef.Get();
+
+            if (userDoc.Contains("characterRef"))
+            {
+                await User.GetUserInstance().LoadCharacterFromFirestoreAsync();
+                intent = new Intent(this, typeof(MainActivity));
+                
+            }
+            else
+            {
+                intent = new Intent(this, typeof(CharCreationActivity));
+            }
             intent.SetFlags(ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(intent);
+
         }
     }
 }

@@ -91,11 +91,14 @@ namespace FinalProj_Tomogochi.Activities
                         {
                             // Create the Character with the URL from Firebase
                             Character character = new Character(character_name_edttxt.Text, downloadUrl);
-                            User.GetUserInstance().characters.Add(character);
+                            User.GetUserInstance().Character = character;
                             await User.GetUserInstance().SaveCharacterToFirestoreAsync(character);
-
+                            
                             Toast.MakeText(Application.Context, "Character created successfully!", ToastLength.Short).Show();
-                            Finish(); // or move to another Activity if you want
+
+                            var intent = new Intent(this, typeof(MainActivity));
+                            intent.SetFlags(ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                            StartActivity(intent);
                         }
                         else
                         {
