@@ -11,6 +11,8 @@ using Android.App;
 using Firebase.Firestore;
 using System.Threading.Tasks;
 using Android.Gms.Extensions;
+using Android.Widget;
+using Orientation = Microcharts.Orientation;
 
 namespace FinalProj_Tomogochi.Classes
 {
@@ -22,7 +24,6 @@ namespace FinalProj_Tomogochi.Classes
 		public List<ChartEntry> LastBGs; 
         public int BG_Change { get; private set; }
         private Random rnd = new Random();
-        public DateTime LastActive { get; set; }
         public double Balance { get; set; }
         public Dictionary<Food, int> Inventoiry;
 
@@ -30,13 +31,14 @@ namespace FinalProj_Tomogochi.Classes
 		{
             Name = name;
             avatar_path = path;
-            CurrentBG = 120;
+            CurrentBG = rnd.Next(60,251);
             LastBGs = new List<ChartEntry> { new ChartEntry(CurrentBG) {
                 Label = DateTime.Now.ToString("HH:mm"),
                 ValueLabel = CurrentBG.ToString(),
                 Color = SKColor.Parse(User.GetColorString(CurrentBG, Application.Context))
             } };
-            BG_Change = 0;
+            BG_Change = rnd.Next(-15,16);
+            Balance = GetLastBalanceGain();
             Inventoiry = new Dictionary<Food, int>();
 		}
 
@@ -83,15 +85,24 @@ namespace FinalProj_Tomogochi.Classes
         { 
             Inventoiry[food]--;
             await UpdateFBinventoryAsync();
-            bool raises = rnd.NextDouble() < food.BG_IncreaseChance;
-            bool lowers = rnd.NextDouble() < food.BG_DecreaseChance;
+            double chance = rnd.NextDouble();
+            bool raises = chance < food.BG_IncreaseChance;
+            bool lowers = chance < food.BG_DecreaseChance;
 
             if (raises) {
                 BG_Change += food.IncreaseImpact;
-                return; }
-            if (lowers) {
+                Toast.MakeText(Application.Context, food.Name + " will encrease BG",ToastLength.Short).Show();
+                }
+            else if (lowers) {
                 BG_Change -= food.DecreaseImpact;
+                Toast.MakeText(Application.Context, food.Name + " will lower BG", ToastLength.Short).Show();
             }
+            else
+            {
+                Toast.MakeText(Application.Context, food.Name + " will not affect BG", ToastLength.Short).Show();
+            }
+            await FirebaseHelper.GetFirestore().Collection("characters").Document(Name)
+                .Update("bgChange", BG_Change.ToString());
         }
 
         [Obsolete]
@@ -126,47 +137,65 @@ namespace FinalProj_Tomogochi.Classes
         public void UpdateBG()
         {
             CurrentBG += BG_Change;
+            Balance += GetLastBalanceGain();
 
-            if(CurrentBG < 20 )
-            {
-                Balance += 1;
-            }
-            else if(CurrentBG >= 20 && CurrentBG <= 60)
-            {
-                Balance += 5;
-            }
-            else if(CurrentBG > 60 && CurrentBG <= 80)
-            {
-                Balance += 7;
-            }
-            else if(CurrentBG > 80 && CurrentBG <= 100)
-            {
-                Balance += 20;
-            }
-            else if (CurrentBG > 100 && CurrentBG <= 140)
-            {
-                Balance += 10;
-            }
-            else if (CurrentBG > 140 && CurrentBG <= 180)
-            {
-                Balance += 7;
-            }
-            else if (CurrentBG > 180 && CurrentBG <= 250)
-            {
-                Balance += 5;
-            }
-            else if (CurrentBG > 250 && CurrentBG <= 350)
-            {
-                Balance += 2;
-            }
-            else
-            {
-                Balance += 1;
-            }
-            BG_Change = 0;
+            // Predict the impact of next BG_Change on Balance
+            int potentialChange = PredictBGChange();
+            BG_Change = potentialChange;
         }
 
-        
+        private int PredictBGChange()
+        {
+            int min = -15;
+            int max = 15;
+
+            // Predict impact: the higher the last Balance gain, the bigger the next possible swing
+            int lastBalanceGain = GetLastBalanceGain();
+
+            // Scale the BG change range based on previous balance gain
+            // This will stretch the possible impact range
+            if (lastBalanceGain >= 20)
+            {
+                min = -40;
+                max = 40;
+            }
+            else if (lastBalanceGain >= 10)
+            {
+                min = -20;
+                max = 20;
+            }
+            else if (lastBalanceGain >= 5)
+            {
+                min = -15;
+                max = 15;
+            }
+
+            return rnd.Next(min, max + 1);
+        }
+
+        private int GetLastBalanceGain()
+        {
+            if (CurrentBG < 20)
+                return 1;
+            else if (CurrentBG <= 60)
+                return 5;
+            else if (CurrentBG <= 80)
+                return 7;
+            else if (CurrentBG <= 100)
+                return 20;
+            else if (CurrentBG <= 140)
+                return 10;
+            else if (CurrentBG <= 180)
+                return 7;
+            else if (CurrentBG <= 250)
+                return 5;
+            else if (CurrentBG <= 350)
+                return 2;
+            else
+                return 1;
+        }
+
+
     }
 }
 

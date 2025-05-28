@@ -11,7 +11,7 @@ namespace FinalProj_Tomogochi.Activities
     [Activity (Label = "RegisterActivity", Theme = "@style/AppTheme")]			
 	public class RegisterActivity : Activity
 	{
-        private EditText _fullNameEditText, _lastNameEditText, _usernameEditText, _emailEditText, _passwordEditText, _confirmPasswordEditText;
+        private EditText _fullNameEditText, _emailEditText, _passwordEditText, _confirmPasswordEditText;
         private Button _registerButton, _cancelButton;
         protected override void OnCreate (Bundle savedInstanceState)
 		{
@@ -23,7 +23,6 @@ namespace FinalProj_Tomogochi.Activities
         private void Init()
         {
             _fullNameEditText = FindViewById<EditText>(Resource.Id.fullName_edittxt);
-            _usernameEditText = FindViewById<EditText>(Resource.Id.username_edittxt);
             _emailEditText = FindViewById<EditText>(Resource.Id.email_edittxt);
             _passwordEditText = FindViewById<EditText>(Resource.Id.password_edittxt);
             _confirmPasswordEditText = FindViewById<EditText>(Resource.Id.confirm_password_edittxt);
@@ -41,13 +40,12 @@ namespace FinalProj_Tomogochi.Activities
         private async Task RegisterUser()
         {
             string fullName = _fullNameEditText.Text.Trim();
-            string username = _usernameEditText.Text.Trim();
             string email = _emailEditText.Text.Trim();
             string password = _passwordEditText.Text.Trim();
             string confirmPassword = _confirmPasswordEditText.Text.Trim();
 
             if (string.IsNullOrEmpty(fullName) ||
-                string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) ||
+                string.IsNullOrEmpty(email) ||
                 string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
             {
                 Toast.MakeText(this, "Please fill in all fields.", ToastLength.Short).Show();
@@ -74,7 +72,7 @@ namespace FinalProj_Tomogochi.Activities
 
             try
             {
-                bool success = await User.Register(fullName, username, email, password);
+                bool success = await User.Register(fullName, email, password);
                 if (success)
                 {
                     Toast.MakeText(this, "Registration successful!", ToastLength.Short).Show();

@@ -17,7 +17,9 @@ namespace FinalProj_Tomogochi.Services
 	[Service]
 	public class BGupdate : Service
 	{
-		private System.Timers.Timer timer;
+        public static bool IsRunning { get; private set; }
+
+        private System.Timers.Timer timer;
 		private Character character;
 		private DocumentReference characterRef;
 		private CollectionReference BGcollectionRef;
@@ -26,7 +28,7 @@ namespace FinalProj_Tomogochi.Services
         public override void OnCreate()
         {
             base.OnCreate();
-
+            IsRunning = true;
             character = User.GetUserInstance().Character;
             characterRef = FirebaseHelper.GetFirestore()
                 .Collection("characters")
@@ -67,9 +69,8 @@ namespace FinalProj_Tomogochi.Services
                         }
                     }
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    Toast.MakeText(Application.Context, $"Service update failed: {ex.Message}", ToastLength.Long).Show();
                 }
             };
             timer.Start();
@@ -106,6 +107,14 @@ namespace FinalProj_Tomogochi.Services
         }
 
         public override IBinder OnBind(Intent intent) => null;
-	}		
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            IsRunning = false;
+            timer?.Stop();
+            timer?.Dispose();
+        }
+    }		
 }
 

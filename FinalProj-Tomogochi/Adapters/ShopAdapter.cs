@@ -14,7 +14,6 @@ namespace FinalProj_Tomogochi.Adapters
     {
         private readonly Context _context;
         private readonly List<Food> _foods;
-        private Dialog dialog;
         private DocumentReference characterRef;
         private CollectionReference inventoryRef;
 
@@ -85,7 +84,7 @@ namespace FinalProj_Tomogochi.Adapters
             }
             else
             {
-                Toast.MakeText(_context, "insufficent funds", ToastLength.Short);
+                Toast.MakeText(_context, "insufficent funds", ToastLength.Short).Show();
             }
         }
 
@@ -99,12 +98,13 @@ namespace FinalProj_Tomogochi.Adapters
 
                 if (snapshot.Exists())
                 {
-
+                    User.GetUserInstance().Character.Inventoiry[food] += 1;
                     var currentQuantity = (int)snapshot.Get("quantity");
                     await foodDocRef.Update("quantity", currentQuantity + 1);
                 }
                 else
                 {
+                    User.GetUserInstance().Character.Inventoiry[food] = 1;
                     // Add new food document
                     var foodData = new Dictionary<string, Java.Lang.Object>
                     {

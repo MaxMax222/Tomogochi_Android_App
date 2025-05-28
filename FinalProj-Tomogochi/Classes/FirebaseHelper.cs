@@ -16,9 +16,6 @@ namespace FinalProj_Tomogochi.Classes
     {
         static string projectId;
         static string apiKey;
-
-        static FirebaseFirestore database;
-        static FirebaseStorage storage;
         static FirebaseApp app;
 
         public static FirebaseFirestore GetFirestore() =>  FirebaseFirestore.GetInstance(RetrieveApp());

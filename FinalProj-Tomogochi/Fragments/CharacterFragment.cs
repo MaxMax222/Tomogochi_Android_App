@@ -55,13 +55,13 @@ namespace FinalProj_Tomogochi.Fragments
 
             character.UpdateChart(chartView);
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            if (!BGupdate.IsRunning)
             {
-                Context.StartForegroundService(new Intent(Context, typeof(BGupdate)));
-            }
-            else
-            {
-                Context.StartService(new Intent(Context, typeof(BGupdate)));
+                var intent = new Intent(Context, typeof(BGupdate));
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+                    Context.StartForegroundService(intent);
+                else
+                    Context.StartService(intent);
             }
 
             BGlistener.OnBGEntryRetrieved += Listener_OnBGEntryRetrieved;

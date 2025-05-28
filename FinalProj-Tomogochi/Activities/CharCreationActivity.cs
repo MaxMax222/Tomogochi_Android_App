@@ -81,7 +81,7 @@ namespace FinalProj_Tomogochi.Activities
                         // Download the image bytes from DiceBear URL
                         var imageBytes = await httpClient.GetByteArrayAsync(fullUrl);
 
-                        // Set the storage path in Firebase (example path)
+                        // Set the storage path in Firebase 
                         string in_storagePath = $"avatars/{Guid.NewGuid()}.png";
 
                         // Upload the avatar to Firebase Storage
@@ -95,7 +95,9 @@ namespace FinalProj_Tomogochi.Activities
                             await User.GetUserInstance().SaveCharacterToFirestoreAsync(character);
                             
                             Toast.MakeText(Application.Context, "Character created successfully!", ToastLength.Short).Show();
-
+                            User.GetUserInstance().BGlistener = new BGupdateFBlistener();
+                            User.GetUserInstance().BalanceListener = new BalanceUpdateFBlistener();
+                            User.GetUserInstance().InventoryListener = new InventoryUpdateFBlistener();
                             var intent = new Intent(this, typeof(MainActivity));
                             intent.SetFlags(ActivityFlags.ClearTask | ActivityFlags.NewTask);
                             StartActivity(intent);

@@ -75,7 +75,7 @@ namespace FinalProj_Tomogochi.Classes
             return true;
         }
 
-        public static async Task<bool> Register(string fullName, string username, string email, string password)
+        public static async Task<bool> Register(string fullName, string email, string password)
         {
             try
             {
@@ -89,8 +89,7 @@ namespace FinalProj_Tomogochi.Classes
             try
             {
                 HashMap newUser = new HashMap();
-                newUser.Put("firstName", fullName);
-                newUser.Put("username", username);
+                newUser.Put("fullName", fullName);
                 newUser.Put("email", email);
 
                 var userReference = database.Collection(COLLECTION_NAME).Document(FirebaseAuth.CurrentUser.Uid);
